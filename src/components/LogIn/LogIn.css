@@ -1,0 +1,6 @@
+.form-container{
+    min-width: 600px;
+    max-width: 600px;
+    /* max-height: */
+    background-color: rgba(0,0,0, 0.3);
+}

@@ -1,0 +1,48 @@
+- First create signUp function with two parameter email, password with dispatch.
+- set try-catch block, 
+- in try block : 
+		export const signUp = (email, password) => dispatch =>{ 
+
+        try{
+            myFirebase
+            .auth()
+            .createUserWithEmailAndPassword()
+            .then(databeforeEmail => {
+                myFirebase.auth().onAuthStateChanged((user) => {
+                    user.sendEmailVerification();
+                })
+            }).then(dataAfterEmail => {
+                myFirebase.auth.onAuthStateChanged((user) => {
+                    if(user){
+                        if(user.emailVerified){
+                            dispatch({
+                                type : SIGNUP_SUCCESS,
+                                payload: user
+                            })
+                        } else {
+                            dispatch({
+                                type: EMAIL_NOT_VERIFIED,
+                                payload: "Your Account is created successfully.But you need to verify your email address."
+                            })
+                        }
+                    } else {
+                        dispatch({
+                            type: SIGNUP_ERROR,
+                            payload: "someThing went wrong"
+                        })
+                    }
+                })
+            })
+            .catch((err) => {
+                dispatch({
+                    type: SIGNUP_ERROR,
+                    payload: err.msg
+                })
+            })
+        } catch(err){
+            dispatch({
+                type: SIGNUP_ERROR,
+                payload: err.msg
+            })
+        }
+    }
